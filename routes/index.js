@@ -3,6 +3,9 @@ const router = express.Router();
 const Recipe = require("../models/recipe");
 const unirest = require("unirest");
 const passport = require("passport");
+const accountSid = process.env.SID;
+const authToken = process.env.AUTHTOKEN;
+const client = require("twilio")(accountSid, authToken);
 
 router.get("/", (req, res, next) => {
   res.render("index", { user: req.user });
@@ -26,7 +29,7 @@ router.post("/search", (req, res, next) => {
     .end(function(result) {
       //call next unirest
 
-      res.render("results", { data: result.body.results });
+      res.render("results", { data: result.body.results, user: req.user });
     });
 });
 
@@ -77,7 +80,7 @@ router.get("/save/:id", ensureAuthenticated, (req, res, next) => {
 
 router.get("/my-recipes", ensureAuthenticated, (req, res, next) => {
   Recipe.find({ owner: req.user._id }).then(myRecipes => {
-    res.render("my-recipes", { savedRecipes: myRecipes });
+    res.render("my-recipes", { savedRecipes: myRecipes, user: req.user });
   });
 });
 
@@ -86,6 +89,20 @@ router.get("/delete/:id", (req, res, next) => {
     console.log("deleted!");
     res.redirect("/my-recipes");
   });
+});
+
+router.post("/textRecipe", (req, res, next) => {
+  client.messages
+    .create({
+      body: `Time to start cooking! ${req.body.ingredients}`,
+      from: "+13214246421",
+      to: `+1${req.body.telphone}`
+    })
+    .then(message => {
+      console.log("message sent!");
+      res.redirect("/my-recipes");
+    })
+    .catch(err => console.log(err));
 });
 
 function ensureAuthenticated(req, res, next) {

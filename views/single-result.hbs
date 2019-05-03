@@ -1,6 +1,6 @@
 <div id="recipe">
   <h1>{{this.title}}</h1>
-  <ul>
+  <ul id="ingredients">
     {{#if this.vegan}}
     <li>Vegan <br></li>
     {{/if}}
@@ -25,5 +25,12 @@
   </ul>
 
   <a href="/save/{{this.id}}"><button>Add to My Recipes</button></a><br><br>
-  <button>Text me these ingredients</button>
+
+  <form method="post" action="/textRecipe">
+    <input type="tel" name="telphone" placeholder="8888888888" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" maxlength="12"
+      title="##########" required />
+    <input type="text" name="ingredients" value="{{#each extendedIngredients}} - {{this.originalString}}{{/each}}"
+      hidden>
+    <button>Text me these ingredients</button>
+  </form>
 </div>
