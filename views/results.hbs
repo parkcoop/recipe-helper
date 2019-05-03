@@ -1,0 +1,13 @@
+{{!-- {{data}} --}}
+<ul>
+  {{#each data}}
+
+  <li>
+    <a href="/recipes/{{this.id}}">
+      <h1>{{this.title}}</h1>
+    </a>
+    {{this.description}}
+  </li>
+
+  {{/each}}
+</ul>

@@ -1,0 +1,27 @@
+<h1>{{this.title}}</h1>
+<ul>
+  {{#if this.vegan}}
+  <li>Vegan <br></li>
+  {{/if}}
+  {{#if this.vegetarian}}
+  <li>Vegetarian <br></li>
+  {{/if}}
+  {{#if this.ketogenic}}
+  <li>Keto <br></li>
+  {{/if}}
+  {{#if this.veryPopular}}
+  <li>Popular <br></li>
+  {{/if}}
+</ul>
+{{#if this.preparationMinutes}}
+<h3><img src="/images/clock.png" width="15px"> {{this.preparationMinutes}} minutes to prepare</h3>
+{{/if}}
+<p id="description">{{this.instructions}}</p>
+<ul>
+  {{#each extendedIngredients}}
+  <li>{{this.originalString}}</li>
+  {{/each}}
+</ul>
+
+<a href="/save/{{this.id}}"><button>Add to My Recipes</button></a><br><br>
+<button>Text me these ingredients</button>
