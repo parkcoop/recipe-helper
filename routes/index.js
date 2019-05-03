@@ -2,21 +2,21 @@ const express = require("express");
 const router = express.Router();
 const Recipe = require("../models/recipe");
 const unirest = require("unirest");
+const passport = require("passport");
 
-/* GET home page */
 router.get("/", (req, res, next) => {
-  res.render("index");
+  res.render("index", { user: req.user });
 });
 
 router.get("/search", (req, res, next) => {
-  res.render("search");
+  res.render("search", { user: req.user });
 });
 
 router.post("/search", (req, res, next) => {
   let searchTerm = req.body.query;
   unirest
     .get(
-      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=10&offset=0&query=${searchTerm}`
+      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=25&offset=0&query=${searchTerm}`
     )
     .header(
       "X-RapidAPI-Host",
@@ -46,9 +46,8 @@ router.get("/recipes/:id", (req, res, next) => {
       res.render("single-result", result.body);
     });
 });
-//for each to save each ingredient
 
-router.get("/save/:id", (req, res, next) => {
+router.get("/save/:id", ensureAuthenticated, (req, res, next) => {
   unirest
     .get(
       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
@@ -66,7 +65,8 @@ router.get("/save/:id", (req, res, next) => {
         title: result.body.title,
         ingredients: result.body.extendedIngredients,
         instructions: result.body.instructions,
-        time: result.body.preparationMinutes
+        time: result.body.preparationMinutes,
+        owner: req.user._id
       });
       saveThisRecipe.save().then(saved => {
         console.log("saved!");
@@ -75,19 +75,11 @@ router.get("/save/:id", (req, res, next) => {
     });
 });
 
-router.get("/my-recipes", (req, res, next) => {
-  Recipe.find().then(myRecipes => {
-    // console.log(myRecipes);
+router.get("/my-recipes", ensureAuthenticated, (req, res, next) => {
+  Recipe.find({ owner: req.user._id }).then(myRecipes => {
     res.render("my-recipes", { savedRecipes: myRecipes });
   });
 });
-
-// router.get("/my-recipes", (req, res, next) => {
-//   Recipe.find().then(myRecipes => {
-//     // console.log(myRecipes);
-//     res.render("my-recipes", { savedRecipes: myRecipes });
-//   });
-// });
 
 router.get("/delete/:id", (req, res, next) => {
   Recipe.findByIdAndDelete(req.params.id).then(deleted => {
@@ -95,5 +87,13 @@ router.get("/delete/:id", (req, res, next) => {
     res.redirect("/my-recipes");
   });
 });
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect("/login");
+  }
+}
 
 module.exports = router;

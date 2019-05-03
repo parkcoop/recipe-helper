@@ -14,21 +14,26 @@
     <a href="/"><img id="logo" width="400px" src="/images/recipehelper.png"></a>
     <div>
       <form method="post" action="/search">
-        <input type="text" name="query">
+        <input id="searchTop" type="text" name="query">
         <input type="submit">
       </form>
     </div>
     <div>
       <ul>
+        {{#if user}}
+        <h4 id="welcome">Welcome, {{user.username}}</h4>
+        <a href="/logout">Sign out</a>
+        {{else}}
         <a href="/signup">
           <li>Sign up</li>
         </a>
         <a href="/login">
           <li>Log in</li>
         </a>
-        <a href="/logout">
-          <li>Log out</li>
-        </a>
+        {{/if}}
+
+
+
       </ul>
     </div>
   </header>

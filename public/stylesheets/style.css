@@ -1,11 +1,19 @@
+@media screen and (max-width: 600px) {
+  div.example {
+    display: none; } }
+
 body {
+  background: url("/images/bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: 0px;
   width: 100%;
   padding: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
 
 a {
-  color: #00b7ff; }
+  color: black;
+  font-size: 1.1em; }
 
 #form {
   margin: 30px auto;
@@ -49,12 +57,11 @@ a {
 #navbar {
   background: #3b3b3b;
   margin: 0px;
-  width: 100%;
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
   align-self: center;
-  justify-content: space-between; }
+  justify-content: space-around; }
 
 #logo {
   align-self: center; }
@@ -64,7 +71,7 @@ a {
   margin-top: 0px;
   padding: 50px;
   width: 75%;
-  background: rgba(185, 185, 185, 0.308); }
+  background: rgba(255, 255, 255, 0.815); }
 
 #description {
   line-height: 1.5; }
@@ -72,5 +79,22 @@ a {
 #attributes {
   background: white;
   display: inline; }
+
+#searchbar {
+  width: 50%;
+  margin: auto; }
+
+#recipe {
+  width: 75%;
+  margin: auto; }
+
+#searchTop {
+  width: 500px;
+  height: 50px;
+  margin-top: 25px;
+  font-size: 2em; }
+
+#welcome {
+  color: white; }
 
 /*# sourceMappingURL=style.css.map */
