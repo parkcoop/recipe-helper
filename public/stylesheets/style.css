@@ -97,4 +97,9 @@ a {
 #welcome {
   color: white; }
 
+#instructionsEdit {
+  height: 100px;
+  width: 600px;
+  resize: none; }
+
 /*# sourceMappingURL=style.css.map */

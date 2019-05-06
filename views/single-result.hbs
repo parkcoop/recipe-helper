@@ -1,35 +1,35 @@
 <div id="recipe">
-  <h1>{{this.title}}</h1>
+  <h1>{{data.title}}</h1>
   <ul id="ingredients">
-    {{#if this.vegan}}
+    {{#if data.vegan}}
     <li>Vegan <br></li>
     {{/if}}
-    {{#if this.vegetarian}}
+    {{#if data.vegetarian}}
     <li>Vegetarian <br></li>
     {{/if}}
-    {{#if this.ketogenic}}
+    {{#if data.ketogenic}}
     <li>Keto <br></li>
     {{/if}}
-    {{#if this.veryPopular}}
+    {{#if data.veryPopular}}
     <li>Popular <br></li>
     {{/if}}
   </ul>
-  {{#if this.preparationMinutes}}
-  <h3><img src="/images/clock.png" width="15px"> {{this.preparationMinutes}} minutes to prepare</h3>
+  {{#if data.preparationMinutes}}
+  <h3><img src="/images/clock.png" width="15px"> {{data.preparationMinutes}} minutes to prepare</h3>
   {{/if}}
-  <p id="description">{{this.instructions}}</p>
+  <p id="description">{{data.instructions}}</p>
   <ul>
-    {{#each extendedIngredients}}
+    {{#each data.extendedIngredients}}
     <li>{{this.originalString}}</li>
     {{/each}}
   </ul>
 
-  <a href="/save/{{this.id}}"><button>Add to My Recipes</button></a><br><br>
+  <a href="/save/{{data.id}}"><button>Add to My Recipes</button></a><br><br>
 
   <form method="post" action="/textRecipe">
     <input type="tel" name="telphone" placeholder="8888888888" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" maxlength="12"
       title="##########" required />
-    <input type="text" name="ingredients" value="{{#each extendedIngredients}} - {{this.originalString}}{{/each}}"
+    <input type="text" name="ingredients" value="{{#each data.extendedIngredients}} - {{this.originalString}}{{/each}}"
       hidden>
     <button>Text me these ingredients</button>
   </form>

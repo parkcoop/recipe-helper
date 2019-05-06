@@ -1,5 +1,21 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    console.log("IronGenerator JS imported successfully!");
+  },
+  false
+);
 
-  console.log('IronGenerator JS imported successfully!');
+console.log("hi");
 
-}, false);
+// $("#add").live("click", function() {
+//   $(this)
+//     .closest("form")
+//     .append('<input type="text" value="test">');
+// });
+
+$("#add").click(() => {
+  console.log("new field");
+  var new_input = "<input type='text' name='ingredients'>";
+  $("#ingredients").append(new_input);
+});

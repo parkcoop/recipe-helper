@@ -1,0 +1,23 @@
+<div id="recipe">
+  <h1>{{data.[0].title}}</h1>
+
+  {{#if data.[0].time}}
+  <h3><img src="/images/clock.png" width="15px"> {{data.[0].time}} minutes to prepare</h3>
+  {{/if}}
+  <p id="description">{{data.[0].instructions}}</p>
+  <ul>
+    {{#each data.[0].ingredients}}
+    <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  <a href="/edit/{{data.[0]._id}}"><button>Edit my recipe</button></a>
+
+  <form method="post" action="/textRecipe">
+    <input type="tel" name="telphone" placeholder="8888888888" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" maxlength="12"
+      title="##########" required />
+    <input type="text" name="ingredients" value="{{#each data.extendedIngredients}} - {{this.originalString}}{{/each}}"
+      hidden>
+    <button>Text me these ingredients</button>
+  </form>
+
+</div>
