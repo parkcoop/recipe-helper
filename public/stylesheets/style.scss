@@ -1,24 +1,53 @@
-@media screen and (max-width: 600px) {
-  div.example {
-    display: none;
-  }
-}
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 
 body {
   background: url("/images/bg.png");
   background-size: cover;
-  background-repeat: no-repeat;
+  overflow-x: hidden;
+  // overflow-y: hidden;
+  background-repeat: repeat;
   margin: 0px;
   width: 100%;
   padding: 0px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
 }
-
+#inputBox {
+  width: 50%;
+  height: 200px;
+}
+ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+li {
+  padding: 5px;
+}
+input {
+  padding: 10px;
+  border: 1px solid black;
+}
 a {
   color: black;
   font-size: 1.1em;
-}
 
+  text-decoration: none;
+}
+button {
+  margin: 15px;
+}
+#authBox {
+  background: rgba(255, 255, 255, 0.815);
+  border: 1px solid black;
+  padding: 25px;
+}
+#searchForm {
+  display: flex;
+  align-items: center;
+}
+#joke {
+  font-size: 1.2em;
+}
 #form {
   margin: 30px auto;
   width: 380px;
@@ -64,13 +93,14 @@ a {
 }
 
 #navbar {
-  background: rgb(59, 59, 59);
+  background: #3b3b3b;
   margin: 0px;
-
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   align-self: center;
+  align-items: center;
   justify-content: space-around;
 }
 
@@ -80,14 +110,17 @@ a {
 
 #body-container {
   margin: auto;
+  text-align: center;
   margin-top: 0px;
   padding: 50px;
   width: 75%;
+  // background-image: url("/images/pattern.png");
   background: rgba(255, 255, 255, 0.815);
 }
 
 #description {
   line-height: 1.5;
+  font-size: 1.25em;
 }
 
 #attributes {
@@ -95,6 +128,15 @@ a {
   display: inline;
 }
 
+.editing {
+  width: 80%;
+  border: 1px solid black;
+  padding: 10px;
+}
+#inputBox {
+  width: 80%;
+  height: 200px;
+}
 #searchbar {
   width: 50%;
   margin: auto;
@@ -104,7 +146,24 @@ a {
   width: 75%;
   margin: auto;
 }
-
+#searchInput {
+  padding: 10px;
+  width: 500px;
+}
+#searchSubmit {
+  background-color: #df3b3b; /* Green */
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+#searchBox {
+  display: flex;
+  margin: 10px;
+}
 #searchTop {
   width: 500px;
   height: 50px;
@@ -120,4 +179,161 @@ a {
   height: 100px;
   width: 600px;
   resize: none;
+}
+
+#recipeHead {
+  font-size: 2em;
+}
+
+#myRecipes {
+  list-style: none;
+}
+
+#recipeTitle {
+  font-size: 3em;
+}
+/*
+
+MOBILE
+
+
+*/
+
+@media (max-width: 800px) {
+  html {
+    overflow-x: hidden;
+    // height: 100%;
+  }
+  ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+  }
+  button {
+    margin: 15px;
+  }
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    background-size: initial;
+    padding: 0px;
+    overflow-x: hidden;
+  }
+  #aLogo {
+    position: relative;
+    left: 25%;
+  }
+  #form {
+    margin: 30px auto;
+    width: 380px;
+  }
+
+  #navbar {
+    margin: 0px;
+    align-items: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    align-self: center;
+    justify-content: space-around;
+  }
+
+  #logo {
+    align-self: center;
+    width: 50%;
+    order: 1;
+  }
+  .editing {
+    width: 80%;
+  }
+  #body-container {
+    margin: auto;
+    text-align: center;
+    margin-top: 0px;
+    padding: 10px;
+    width: 90%;
+    background: rgba(255, 255, 255, 0.815);
+  }
+
+  #description {
+    line-height: 1.5;
+  }
+
+  #attributes {
+    background: white;
+    display: inline;
+  }
+
+  #recipe {
+    width: 75%;
+    margin: auto;
+  }
+
+  #searchTop {
+    width: 100%;
+    height: 50px;
+    margin-top: 25px;
+    font-size: 2em;
+  }
+
+  #welcome {
+    color: white;
+  }
+  #userDisplay {
+    display: none;
+  }
+  #instructionsEdit {
+    height: 100px;
+    width: 600px;
+    resize: none;
+  }
+
+  #recipeHead {
+    font-size: 2em;
+  }
+
+  #myRecipes {
+    list-style: none;
+  }
+  #searchInput {
+    padding: 10px;
+    width: 100%;
+  }
+  #searchSubmit {
+    background-color: #df3b3b; /* Green */
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+  #searchBox {
+    display: flex;
+    margin: 10px;
+  }
+
+  #inputBox {
+    width: 80%;
+    height: 200px;
+  }
+  .yellowBtn {
+    background: yellow;
+    color: black;
+  }
+}
+
+//searec
+button {
+  background-color: #df3b3b; /* Green */
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }

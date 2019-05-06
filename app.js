@@ -101,7 +101,11 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
-
+hbs.registerHelper("sentence-case", function(context) {
+  return context.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+});
 // default value for title local
 app.locals.title = "Recipe Helper";
 

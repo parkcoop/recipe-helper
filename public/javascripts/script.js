@@ -16,6 +16,6 @@ console.log("hi");
 
 $("#add").click(() => {
   console.log("new field");
-  var new_input = "<input type='text' name='ingredients'>";
+  var new_input = "<input type='text' class='editing' name='ingredients'>";
   $("#ingredients").append(new_input);
 });

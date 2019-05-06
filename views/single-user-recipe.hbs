@@ -1,5 +1,5 @@
 <div id="recipe">
-  <h1>{{data.[0].title}}</h1>
+  <h1 id="recipeTitle">{{data.[0].title}}</h1>
 
   {{#if data.[0].time}}
   <h3><img src="/images/clock.png" width="15px"> {{data.[0].time}} minutes to prepare</h3>
@@ -10,14 +10,14 @@
     <li>{{this}}</li>
     {{/each}}
   </ul>
+  <br><br>
   <a href="/edit/{{data.[0]._id}}"><button>Edit my recipe</button></a>
 
   <form method="post" action="/textRecipe">
     <input type="tel" name="telphone" placeholder="8888888888" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" maxlength="12"
-      title="##########" required />
-    <input type="text" name="ingredients" value="{{#each data.extendedIngredients}} - {{this.originalString}}{{/each}}"
-      hidden>
-    <button>Text me these ingredients</button>
+      title="##########" required /><br>
+    <input type="text" name="ingredients" value="{{#each data.[0].ingredients}} - {{this}}{{/each}}" hidden>
+    <button>Text me these ingredients</button><br>
   </form>
 
 </div>

@@ -8,6 +8,7 @@ const authToken = process.env.AUTHTOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 router.get("/", (req, res, next) => {
+  //random joke: (removed)
   // unirest
   //   .get(
   //     "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/jokes/random"
@@ -51,8 +52,6 @@ router.post("/search", (req, res, next) => {
     )
     .header("X-RapidAPI-Key", process.env.KEY)
     .end(function(result) {
-      //call next unirest
-
       res.render("results", { data: result.body.results, user: req.user });
     });
 });
@@ -102,10 +101,13 @@ router.get("/save/:id", ensureAuthenticated, (req, res, next) => {
         time: result.body.preparationMinutes,
         owner: req.user._id
       });
-      saveThisRecipe.save().then(saved => {
-        console.log("saved!");
-        res.redirect("/my-recipes");
-      });
+      saveThisRecipe
+        .save()
+        .then(saved => {
+          console.log("saved!");
+          res.redirect("/my-recipes");
+        })
+        .catch(err => console.log(err));
     });
 });
 
@@ -120,31 +122,25 @@ router.get("/my-recipes", ensureAuthenticated, (req, res, next) => {
 
 router.get("/my-recipes/:id", ensureAuthenticated, (req, res, next) => {
   Recipe.find({ owner: req.user._id, recipeId: req.params.id }).then(data => {
-    console.log("data", data);
-    res.render(
-      "single-user-recipe",
-      { data: data }
-      // user: req.user
-    );
+    res.render("single-user-recipe", { data: data, user: req.user });
   });
 });
-//http://localhost:3000/edit/5ccc40965a786904219d13d6
+
 router.get("/edit/:id", (req, res, next) => {
   Recipe.findById(req.params.id).then(recipe => {
-    console.log(recipe);
     res.render("edit-recipe", recipe);
   });
 });
 router.post("/edit/:id", (req, res, next) => {
-  // console.log(req.body);
   let updatedIngredients = [];
-  for (let i = 0; i < req.body.ingredients.length; i++) {
-    if (req.body.ingredients[i].length > 0) {
-      updatedIngredients.push(req.body.ingredients[i]);
+  if (Array.isArray(req.body.ingredients)) {
+    for (let i = 0; i < req.body.ingredients.length; i++) {
+      if (req.body.ingredients[i].length > 0) {
+        updatedIngredients.push(req.body.ingredients[i]);
+      }
     }
-  }
+  } else updatedIngredients = req.body.ingredients;
   let redirectId = req.body.id;
-  // console.log(updatedIngredients);
   Recipe.findByIdAndUpdate(req.params.id, {
     title: req.body.title,
     time: req.body.time,
@@ -152,7 +148,6 @@ router.post("/edit/:id", (req, res, next) => {
     instructions: req.body.instructions
   })
     .then(recipe => {
-      console.log("updated recipe");
       res.redirect(`/my-recipes/${redirectId}`);
     })
     .catch(err => console.log(err));
@@ -160,12 +155,12 @@ router.post("/edit/:id", (req, res, next) => {
 
 router.get("/delete/:id", (req, res, next) => {
   Recipe.findByIdAndDelete(req.params.id).then(deleted => {
-    console.log("deleted!");
     res.redirect("/my-recipes");
   });
 });
 
 router.post("/textRecipe", (req, res, next) => {
+  console.log(req.body);
   client.messages
     .create({
       body: `Time to start cooking! ${req.body.ingredients}`,

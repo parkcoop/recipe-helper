@@ -11,30 +11,30 @@
 
 <body>
   <header id="navbar">
-    <a href="/"><img id="logo" width="400px" src="/images/recipehelper.png"></a>
-    <div>
-      <form method="post" action="/search">
-        <input id="searchTop" type="text" name="query">
-        <input type="submit">
+    <a id="aLogo" href="/"><img id="logo" width="400px" src="/images/recipehelper.png"></a>
+    <div id="searchForm">
+      <form id="searchBox" method="post" action="/search">
+        <input id="searchInput" type="text" name="query">
+        <input id="searchSubmit" type="submit">
       </form>
     </div>
-    <div>
-      <ul>
-        {{#if user}}
-        <h4 id="welcome">Welcome, {{user.username}}</h4>
-        <a href="/logout">Sign out</a>
-        {{else}}
-        <a href="/signup">
-          <li>Sign up</li>
-        </a>
-        <a href="/login">
-          <li>Log in</li>
-        </a>
-        {{/if}}
+    <div id="userDisplay">
+
+      {{#if user}}
+      <span id="welcome">Welcome, {{sentence-case user.username}}</span>
+      <a href="/logout">Sign out</a>
+      {{else}}
+      <a href="/signup">
+        <li>Sign up</li>
+      </a>
+      <a href="/login">
+        <li>Log in</li>
+      </a>
+      {{/if}}
 
 
 
-      </ul>
+
     </div>
   </header>
   <div id="body-container">
@@ -43,10 +43,10 @@
   <script src="https://code.jquery.com/jquery-3.4.0.slim.js"
     integrity="sha256-milezx5lakrZu0OP9b2QWFy1ft/UEUK6NH1Jqz8hUhQ=" crossorigin="anonymous"></script>
   <script src="/javascripts/script.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.0.slim.js"
-    integrity="sha256-milezx5lakrZu0OP9b2QWFy1ft/UEUK6NH1Jqz8hUhQ=" crossorigin="anonymous"></script>
+
 
 
 </body>
+
 
 </html>

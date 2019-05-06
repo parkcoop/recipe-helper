@@ -1,17 +1,25 @@
-<form action="/login" method="POST">
+<center>
+  <h1>Login</h1>
+</center>
+
+<form action="/login" method="POST" id="authBox">
   <div>
     <label for="username">Username:</label>
-    <input type="text" name="username">
+    <input id="username" type="text" name="username">
+    <br><br>
   </div>
   <div>
     <label for="password">Password:</label>
-    <input type="password" name="password">
+    <input id="password" type="password" name="password">
   </div>
   {{#if message}}
   <div class="error-message">{{ message }}</div>
   {{/if}}
   <div>
-    <input type="submit" value="Log In">
+    <button type="submit">Log In</button>
   </div>
+  <p class="account-message">
+    Need to create an account?
+    <a href="/signup">Sign up</a>
+  </p>
 </form>
-<a href="/">Go back</a>

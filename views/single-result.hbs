@@ -1,5 +1,5 @@
 <div id="recipe">
-  <h1>{{data.title}}</h1>
+  <h1 id="recipeTitle">{{data.title}}</h1>
   <ul id="ingredients">
     {{#if data.vegan}}
     <li>Vegan <br></li>
@@ -23,7 +23,7 @@
     <li>{{this.originalString}}</li>
     {{/each}}
   </ul>
-
+  <br><br>
   <a href="/save/{{data.id}}"><button>Add to My Recipes</button></a><br><br>
 
   <form method="post" action="/textRecipe">

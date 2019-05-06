@@ -1,8 +1,10 @@
-<ul>
+<ul id="myRecipes">
   {{#each savedRecipes}}
-  <a href="/my-recipes/{{this.recipeId}}">
+  <br>
+  <a id="recipeHead" href="/my-recipes/{{this.recipeId}}">
     <li>{{this.title}}</li>
   </a>
-  <a href="/delete/{{this.id}}"><button>Delete</button></a><br>
+  <a href="/delete/{{this.id}}"><button>Delete</button></a><br><br>
+  <hr>
   {{/each}}
 </ul>
