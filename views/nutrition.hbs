@@ -1,16 +1,66 @@
-<h1>General</h1>
-<canvas id="myChart" width="400" height="200"></canvas><br><br><br><br>
-<h1>Complex nutrition</h1>
-<canvas id="secondChart" width="400" height="200"></canvas>
+<style>
+  canvas {
+    max-width: 1000px;
+    margin: auto;
+  }
+
+  #blockContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  #nutritionBlock {
+    background: white;
+    padding: 15px;
+    width: 125px;
+    border: 2.5px solid black;
+    text-align: center;
+    margin: 10px;
+  }
+</style>
+
+<div id="chartContainer">
+  <h1>General</h1>
+  <canvas id="myChart" width="400" height="200"></canvas><br><br><br><br>
+  <h1>Complex nutrition</h1>
+  <canvas id="secondChart" width="400" height="200"></canvas>
+</div>
+{{!-- 
 <h1>Overview</h1>
-{{data.body.calories}} calories<br><br>
-{{data.body.carbs}} carbohydrates<br><br>
-{{data.body.fat}} grams of fat<br><br>
-{{data.body.protein}} grams of protein<br><br>
+<div id="blockContainer">
+  <div id="nutritionBlock">
+    <h2>Calories</h2>{{data.body.calories}} calories<br><br>
+  </div>
+  <div id="nutritionBlock">
+    <h2>Carbs</h2>{{data.body.carbs}} carbohydrates<br><br>
+  </div>
+  <div id="nutritionBlock">
+    <h2>Fat</h2>{{data.body.fat}} grams of fat<br><br>
+  </div>
+  <div id="nutritionBlock">
+    <h2>Protein</h2>{{data.body.protein}} grams of protein<br><br>
+  </div>
+  <div id="nutritionBlock">
+    <h2>Sugar</h2>{{data.body.bad.[4].amount}} grams of sugar<br><br>
+  </div>
+</div> --}}
+<h1>Consider the bad...</h1>
+<div id="blockContainer">
+  {{#each data.body.bad}}
+  <div id="nutritionBlock">
+    <h2>{{this.title}}</h2>{{this.amount}}<br>({{this.percentOfDailyNeeds}}% daily value)
+  </div>
+  {{/each}}
+</div>
 <h1>Good source of</h1>
-{{#each data.body.good}}
-<h2>{{this.title}}</h2>{{this.amount}}<br>({{this.percentOfDailyNeeds}}% daily value)<br><br>
-{{/each}}
+<div id="blockContainer">
+  {{#each data.body.good}}
+  <div id="nutritionBlock">
+    <h2>{{this.title}}</h2>{{this.amount}}<br>({{this.percentOfDailyNeeds}}% daily value)
+  </div>
+  {{/each}}
+</div>
 
 <span id="nutritionTitles" hidden>{{nutritionFacts.titles}}</span>
 <span id="nutritionAmounts" hidden>{{nutritionFacts.amounts}}</span>
@@ -18,8 +68,7 @@
 {{!-- {{#each nutritionFacts}}
 {{this}}
 {{/each}} --}}
-<script src="https://code.jquery.com/jquery-3.4.0.slim.js"
-  integrity="sha256-milezx5lakrZu0OP9b2QWFy1ft/UEUK6NH1Jqz8hUhQ=" crossorigin="anonymous"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
   let titles = document.getElementById('nutritionTitles').innerHTML.split(',')
