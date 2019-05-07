@@ -108,6 +108,9 @@ hbs.registerHelper("sentence-case", function(context) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 });
+hbs.registerHelper("parseInt", function(context) {
+  return parseInt(context);
+});
 // default value for title local
 app.locals.title = "Recipe Helper";
 

@@ -1,0 +1,123 @@
+<h1>General</h1>
+<canvas id="myChart" width="400" height="200"></canvas><br><br><br><br>
+<h1>Complex nutrition</h1>
+<canvas id="secondChart" width="400" height="200"></canvas>
+<h1>Overview</h1>
+{{data.body.calories}} calories<br><br>
+{{data.body.carbs}} carbohydrates<br><br>
+{{data.body.fat}} grams of fat<br><br>
+{{data.body.protein}} grams of protein<br><br>
+<h1>Good source of</h1>
+{{#each data.body.good}}
+<h2>{{this.title}}</h2>{{this.amount}}<br>({{this.percentOfDailyNeeds}}% daily value)<br><br>
+{{/each}}
+
+<span id="nutritionTitles" hidden>{{nutritionFacts.titles}}</span>
+<span id="nutritionAmounts" hidden>{{nutritionFacts.amounts}}</span>
+
+{{!-- {{#each nutritionFacts}}
+{{this}}
+{{/each}} --}}
+<script src="https://code.jquery.com/jquery-3.4.0.slim.js"
+  integrity="sha256-milezx5lakrZu0OP9b2QWFy1ft/UEUK6NH1Jqz8hUhQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>
+  let titles = document.getElementById('nutritionTitles').innerHTML.split(',')
+  let amounts = document.getElementById('nutritionAmounts').innerHTML.split(',')
+
+
+  var ctx = document.getElementById("myChart").getContext("2d");
+  var ctx2 = document.getElementById("secondChart").getContext("2d");
+
+  var carbs = '{{parseInt data.body.carbs}}'
+  var fat = '{{parseInt data.body.fat}}'
+  var protein = '{{parseInt data.body.protein}}'
+  createSimpleNutritionGraph()
+  createGoodNutritionGraph()
+  function createSimpleNutritionGraph() {
+
+    data = {
+      datasets: [{
+        data: [carbs, fat, protein],
+        backgroundColor: [
+          'rgba(247, 206, 107, 1)',
+          'rgba(237, 109, 133, 1)',
+          'rgba(86, 161, 229, 1)',
+        ],
+      }],
+
+
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+        'Carbohydrates',
+        'Fat',
+        'Protein'
+      ]
+    };
+    var myDoughnutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: data,
+      options: null
+    });
+
+  }
+
+  function createGoodNutritionGraph() {
+    var myChart = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: titles,
+        datasets: [{
+          label: '% daily value',
+          data: amounts,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.75)',
+            'rgba(54, 162, 235, 0.75)',
+            'rgba(255, 206, 86, 0.75)',
+            'rgba(75, 192, 192, 0.75)',
+            'rgba(153, 102, 255, 0.75)',
+            'rgba(255, 159, 64, 0.75)',
+            'rgba(255, 99, 132, 0.75)',
+            'rgba(54, 162, 235, 0.75)',
+            'rgba(255, 206, 86, 0.75)',
+            'rgba(75, 192, 192, 0.75)',
+            'rgba(153, 102, 255, 0.75)',
+            'rgba(255, 159, 64, 0.75)',
+            'rgba(255, 99, 132, 0.75)',
+            'rgba(54, 162, 235, 0.75)',
+            'rgba(255, 206, 86, 0.75)',
+            'rgba(75, 192, 192, 0.75)',
+            'rgba(153, 102, 255, 0.75)',
+            'rgba(255, 159, 64, 0.75)',
+            'rgba(255, 99, 132, 0.75)',
+            'rgba(54, 162, 235, 0.75)',
+            'rgba(255, 206, 86, 0.75)',
+            'rgba(75, 192, 192, 0.75)',
+            'rgba(153, 102, 255, 0.75)',
+            'rgba(255, 159, 64, 0.75)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              max: 100,
+              min: 0
+            }
+          }]
+        }
+      }
+    });
+  }
+</script>
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script> --}}

@@ -233,6 +233,36 @@ router.post("/search/users", (req, res, next) => {
     });
   });
 });
+
+router.get("/nutrition/:id", (req, res, next) => {
+  unirest
+    .get(
+      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
+        req.params.id
+      }/nutritionWidget.json`
+    )
+    .header(
+      "X-RapidAPI-Host",
+      "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+    )
+    .header("X-RapidAPI-Key", process.env.KEY)
+    .end(function(result) {
+      console.log(result);
+      const goodNutritionItems = [];
+      const goodNutritionAmounts = [];
+      for (let i = 0; i < result.body.good.length; i++) {
+        // console.log(result.body.good[i].title);
+        // console.log(result.body.good[i].percentOfDailyNeeds);
+        goodNutritionItems.push(result.body.good[i].title);
+        goodNutritionAmounts.push(result.body.good[i].percentOfDailyNeeds);
+      }
+      goodNutrition = {
+        titles: goodNutritionItems,
+        amounts: goodNutritionAmounts
+      };
+      res.render("nutrition", { data: result, nutritionFacts: goodNutrition });
+    });
+});
 //5cd111cf27db5221cfa024e1/559371
 // router.get("/user-recipes/:userId/:recipeId", (req, res, next) => {
 //   console.log(`User ${req.params.userId}'s recipe ${req.params.recipeId} `);

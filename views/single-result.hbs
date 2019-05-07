@@ -1,6 +1,7 @@
 <div id="recipe">
   <img id="dishImage" src="{{data.image}}">
   <h1 id="recipeTitle">{{data.title}}</h1>
+  <a href="/nutrition/{{data.id}}"><button>Get nutrition information</button></a>
   <ul id="ingredients">
     {{#if data.vegan}}
     <li>Vegan <br></li>
