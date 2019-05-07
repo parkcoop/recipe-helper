@@ -4,4 +4,5 @@
 {{#if user}}
 <h1>Welcome, {{sentence-case user.username}}</h1>
 <a href="/my-recipes"><button>View my recipes</button></a>
+<a href="/users/{{user._id}}"><button>View my profile</button></a>
 {{/if}}

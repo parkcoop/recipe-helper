@@ -1,0 +1,10 @@
+<h1>{{sentence-case foundUser.username}}</h1>
+<a href="/addPhoto"><img id="avatar" src="{{foundUser.avatar}}"></a>
+<ul>
+  {{#each userRecipes}}
+  <li>
+    <h2><a href="/recipes/{{this.recipeId}}">{{this.title}}</a></h2>
+  </li>
+
+  {{/each}}
+</ul>

@@ -6,6 +6,9 @@ const passport = require("passport");
 const accountSid = process.env.SID;
 const authToken = process.env.AUTHTOKEN;
 const client = require("twilio")(accountSid, authToken);
+const User = require("../models/user");
+//const multer = require("multer");
+const uploadCloud = require("../cloudinary");
 
 router.get("/", (req, res, next) => {
   //random joke: (removed)
@@ -52,6 +55,7 @@ router.post("/search", (req, res, next) => {
     )
     .header("X-RapidAPI-Key", process.env.KEY)
     .end(function(result) {
+      // console.log(result);
       res.render("results", { data: result.body.results, user: req.user });
     });
 });
@@ -69,6 +73,7 @@ router.get("/recipes/:id", (req, res, next) => {
     )
     .header("X-RapidAPI-Key", process.env.KEY)
     .end(function(result) {
+      console.log(result);
       res.render("single-result", { data: result.body, user: req.user });
     });
 });
@@ -99,6 +104,7 @@ router.get("/save/:id", ensureAuthenticated, (req, res, next) => {
         ingredients: ingredientsArray,
         instructions: result.body.instructions,
         time: result.body.preparationMinutes,
+        imgURL: result.body.image,
         owner: req.user._id
       });
       saveThisRecipe
@@ -173,6 +179,70 @@ router.post("/textRecipe", (req, res, next) => {
     })
     .catch(err => console.log(err));
 });
+
+// router.get("/search/users/:username", (req, res, next) => {
+//   var regexp = new RegExp("^" + req.params.username, "i");
+//   User.find({ username: regexp }).then(users => {
+//     res.render("user-results", {
+//       users: users,
+//       query: req.params.username,
+//       user: req.user
+//     });
+//   });
+// });
+
+router.get("/users/:id", (req, res, next) => {
+  User.findById(req.params.id).then(user => {
+    // console.log(user);
+    Recipe.find({ owner: req.params.id }).then(userRecipes => {
+      // console.log("this users recipes$$$$$$$$$$$$$$$$", userRecipes);
+      res.render("profile", {
+        foundUser: user,
+        userRecipes: userRecipes,
+        user: req.user
+      });
+    });
+  });
+});
+
+router.get("/addPhoto", (req, res, next) => {
+  res.render("photo-add");
+});
+
+// console.log(uploadCloud);
+
+router.post("/addPhoto", uploadCloud.single("photo"), (req, res, next) => {
+  console.log("youll see the pic as req.file", req.file);
+
+  User.findByIdAndUpdate(req.user._id, {
+    avatar: req.file.url
+  })
+    .then(res.redirect("/"))
+    .catch(err => console.log(err));
+  // res.redirect("back");
+});
+
+router.post("/search/users", (req, res, next) => {
+  console.log(req.body.query);
+  var regexp = new RegExp("^" + req.body.query, "i");
+  User.find({ username: regexp }).then(users => {
+    res.render("user-results", {
+      users: users,
+      query: req.body.query,
+      user: req.user
+    });
+  });
+});
+//5cd111cf27db5221cfa024e1/559371
+// router.get("/user-recipes/:userId/:recipeId", (req, res, next) => {
+//   console.log(`User ${req.params.userId}'s recipe ${req.params.recipeId} `);
+//   Recipe.find({
+//     owner: req.params.userId
+//   }).then(data => {
+//     console.log(data);
+//     res.render("single-user-recipe", { data: data, user: req.user });
+//   });
+// });
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {

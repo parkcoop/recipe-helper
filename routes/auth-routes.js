@@ -8,6 +8,7 @@ const ensureLogin = require("connect-ensure-login");
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
+const FacebookStrategy = require("passport-facebook").Strategy;
 
 //auth login
 
@@ -72,5 +73,16 @@ authRoutes.get("/logout", (req, res) => {
 authRoutes.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
   res.render("private", { user: req.user });
 });
+
+// authRoutes.get("/facebook", passport.authenticate("facebook"));
+
+// authRoutes.get(
+//   "/facebook/callback",
+//   passport.authenticate("facebook", { failureRedirect: "/login" }),
+//   function(req, res) {
+//     // Successful authentication, redirect home.
+//     res.redirect("/");
+//   }
+// );
 
 module.exports = authRoutes;

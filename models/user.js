@@ -4,7 +4,13 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema(
   {
     username: { type: String, unique: true },
-    password: String
+    password: String,
+    following: Array,
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/parkcoop/image/upload/v1557244076/recipe-helper/blank.png.png"
+    }
   },
   {
     timestamps: true

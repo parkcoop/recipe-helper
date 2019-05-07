@@ -15,20 +15,22 @@
     <div id="searchForm">
       <form id="searchBox" method="post" action="/search">
         <input id="searchInput" type="text" name="query">
-        <input id="searchSubmit" type="submit">
+        <input id="searchSubmit" type="submit" value="Recipes">
+        <input id="searchSubmit-users" type='submit' value='Users' onclick='this.form.action="/search/users";' />
+
       </form>
     </div>
     <div id="userDisplay">
 
       {{#if user}}
-      <span id="welcome">Welcome, {{sentence-case user.username}}</span>
-      <a href="/logout">Sign out</a>
+      <span id="welcome">Welcome, <a href="/users/{{user._id}}">{{sentence-case user.username}}</a></span>
+      <a id="userStuff" href="/logout">Sign out</a>
       {{else}}
-      <a href="/signup">
-        <li>Sign up</li>
-      </a>
-      <a href="/login">
-        <li>Log in</li>
+      <a id="userStuff" href="/signup">
+        Sign up
+      </a> or
+      <a id="userStuff" href="/login">
+        Log in
       </a>
       {{/if}}
 

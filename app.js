@@ -12,11 +12,13 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+
 const User = require("./models/user");
 const flash = require("connect-flash");
 const accountSid = process.env.SID;
 const authToken = process.env.AUTHTOKEN;
 const client = require("twilio")(accountSid, authToken);
+const FacebookStrategy = require("passport-facebook").Strategy;
 mongoose.Promise = Promise;
 mongoose
   .connect("mongodb://localhost/recipehelper", { useNewUrlParser: true })

@@ -23,7 +23,9 @@ li {
 
 input {
   padding: 10px;
-  border: 1px solid black; }
+  border: 1px solid black;
+  text-align: center;
+  font-size: 1.25em; }
 
 a {
   color: black;
@@ -121,7 +123,8 @@ button {
 
 #inputBox {
   width: 80%;
-  height: 200px; }
+  height: 200px;
+  font-size: 1.25em; }
 
 #searchbar {
   width: 50%;
@@ -159,6 +162,17 @@ button {
 #welcome {
   color: white; }
 
+#searchSubmit-users {
+  background-color: #ffffff;
+  /* Green */
+  border: none;
+  color: #3b3b3b;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px; }
+
 #instructionsEdit {
   height: 100px;
   width: 600px;
@@ -173,6 +187,16 @@ button {
 #recipeTitle {
   font-size: 3em; }
 
+#userStuff {
+  color: grey; }
+
+#dishImage {
+  border: 5px solid black; }
+
+#avatar {
+  border: 5px solid black;
+  width: 200px; }
+
 /*
 
 MOBILE
@@ -182,6 +206,11 @@ MOBILE
 @media (max-width: 800px) {
   html {
     overflow-x: hidden; }
+  #dishImage {
+    width: 100%;
+    border: 5px solid black; }
+  #recipeTitle {
+    font-size: 2em; }
   ul {
     list-style: none;
     padding: 0px;
@@ -206,7 +235,7 @@ MOBILE
     align-items: center;
     padding: 20px;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     flex-wrap: wrap;
     align-self: center;
     justify-content: space-around; }

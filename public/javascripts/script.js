@@ -16,6 +16,12 @@ console.log("hi");
 
 $("#add").click(() => {
   console.log("new field");
-  var new_input = "<input type='text' class='editing' name='ingredients'>";
+  var new_input =
+    "<input type='text' class='editing' name='ingredients'><br><br>";
   $("#ingredients").append(new_input);
 });
+
+function changeAction(val) {
+  // console.log("value of search form --------------- ", val);
+  $("#searchForm")[0].setAttribute("action", val);
+}
