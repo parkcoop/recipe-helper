@@ -1,0 +1,13 @@
+<h1>News feed</h1>
+<div id="postContainer">
+  {{#each followersPosts}}
+  <div id="postModule">
+    <a href="/users/{{this.owner._id}}"><img id="postAvatar" width="100px" src="{{this.owner.avatar}}"></a>
+    <div id="content">
+      <h3>{{reformatDate this.date}}</h3>
+      <h2>{{post-case this.title}}</h2>
+    </div>
+  </div> <br><br>
+  {{/each}}
+
+</div>

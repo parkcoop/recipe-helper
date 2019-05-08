@@ -7,6 +7,7 @@ const accountSid = process.env.SID;
 const authToken = process.env.AUTHTOKEN;
 const client = require("twilio")(accountSid, authToken);
 const User = require("../models/user");
+const Post = require("../models/post");
 //const multer = require("multer");
 const uploadCloud = require("../cloudinary");
 
@@ -73,7 +74,7 @@ router.get("/recipes/:id", (req, res, next) => {
     )
     .header("X-RapidAPI-Key", process.env.KEY)
     .end(function(result) {
-      console.log(result);
+      // console.log(result);
       res.render("single-result", { data: result.body, user: req.user });
     });
 });
@@ -110,8 +111,22 @@ router.get("/save/:id", ensureAuthenticated, (req, res, next) => {
       saveThisRecipe
         .save()
         .then(saved => {
-          console.log("saved!");
-          res.redirect("/my-recipes");
+          // console.log(
+          //   `${req.user.username} just added ${
+          //     result.body.title
+          //   } to his recipe book!`
+          // );
+          const newPostToPublish = new Post({
+            title: `${req.user.username} just added ${
+              result.body.title
+            } to their recipe book!`,
+            date: Date.now(),
+            owner: req.user._id
+          });
+          newPostToPublish.save().then(updatedNewsFeed => {
+            console.log("post published!");
+            res.redirect("/my-recipes");
+          });
         })
         .catch(err => console.log(err));
     });
@@ -166,7 +181,7 @@ router.get("/delete/:id", (req, res, next) => {
 });
 
 router.post("/textRecipe", (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   client.messages
     .create({
       body: `Time to start cooking! ${req.body.ingredients}`,
@@ -174,7 +189,7 @@ router.post("/textRecipe", (req, res, next) => {
       to: `+1${req.body.telphone}`
     })
     .then(message => {
-      console.log("message sent!");
+      // console.log("message sent!");
       res.redirect("/my-recipes");
     })
     .catch(err => console.log(err));
@@ -206,13 +221,13 @@ router.get("/users/:id", (req, res, next) => {
 });
 
 router.get("/addPhoto", (req, res, next) => {
-  res.render("photo-add");
+  res.render("photo-add", { user: req.user });
 });
 
 // console.log(uploadCloud);
 
 router.post("/addPhoto", uploadCloud.single("photo"), (req, res, next) => {
-  console.log("youll see the pic as req.file", req.file);
+  // console.log("youll see the pic as req.file", req.file);
 
   User.findByIdAndUpdate(req.user._id, {
     avatar: req.file.url
@@ -223,7 +238,7 @@ router.post("/addPhoto", uploadCloud.single("photo"), (req, res, next) => {
 });
 
 router.post("/search/users", (req, res, next) => {
-  console.log(req.body.query);
+  // console.log(req.body.query);
   var regexp = new RegExp("^" + req.body.query, "i");
   User.find({ username: regexp }).then(users => {
     res.render("user-results", {
@@ -247,7 +262,7 @@ router.get("/nutrition/:id", (req, res, next) => {
     )
     .header("X-RapidAPI-Key", process.env.KEY)
     .end(function(result) {
-      console.log(result);
+      // console.log(result);
       const goodNutritionItems = [];
       const goodNutritionAmounts = [];
       for (let i = 0; i < result.body.good.length; i++) {
@@ -260,8 +275,76 @@ router.get("/nutrition/:id", (req, res, next) => {
         titles: goodNutritionItems,
         amounts: goodNutritionAmounts
       };
-      res.render("nutrition", { data: result, nutritionFacts: goodNutrition });
+      unirest
+        .get(
+          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
+            req.params.id
+          }/information`
+        )
+        .header(
+          "X-RapidAPI-Host",
+          "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+        )
+        .header("X-RapidAPI-Key", process.env.KEY)
+        .end(function(recipeData) {
+          res.render("nutrition", {
+            data: result,
+            nutritionFacts: goodNutrition,
+            user: req.user,
+            recipeData: recipeData
+          });
+        });
     });
+});
+//http://localhost:3000/followUser/5ccb1c37d2b6aa25f28b27d3
+router.get("/followUser/:userId", ensureAuthenticated, (req, res, next) => {
+  console.log(req.params.userId, req.user._id);
+
+  if (req.params.userId != req.user._id) {
+    let updatedFollowers = [];
+    User.findById(req.user._id).then(thisUser => {
+      // console.log(
+      //   `Does ${thisUser.following} include ${req.user._id}   ???????`
+      // );
+      // console.log(!thisUser.following.includes(req.user._id));
+      if (!thisUser.following.includes(req.user._id)) {
+        for (let i = 0; i < thisUser.following.length; i++) {
+          updatedFollowers.push(thisUser.following[i]);
+        }
+        updatedFollowers.push(req.params.userId);
+        User.findOneAndUpdate(
+          { _id: req.user._id },
+          {
+            following: updatedFollowers
+          }
+        )
+          .then(updated => {
+            console.log("followers updated!");
+            res.redirect("/newsfeed");
+          })
+          .catch(err => console.log(err));
+      } else {
+        res.send("YOu already follow that person...");
+      }
+    });
+  } else {
+    res.send("please dont try to follow yourself in public");
+  }
+});
+
+router.get("/newsfeed", ensureAuthenticated, (req, res, next) => {
+  User.findById(req.user._id).then(thisUser => {
+    console.log(thisUser.following);
+    Post.find({ owner: { $in: thisUser.following } })
+      .sort([["date", -1]])
+      .populate("owner")
+      .then(followersPosts => {
+        res.render("news-feed", {
+          followersPosts: followersPosts,
+          user: req.user
+        });
+      });
+  });
 });
 //5cd111cf27db5221cfa024e1/559371
 // router.get("/user-recipes/:userId/:recipeId", (req, res, next) => {

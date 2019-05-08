@@ -12,7 +12,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-
+const dateFormat = require("dateformat");
 const User = require("./models/user");
 const flash = require("connect-flash");
 const accountSid = process.env.SID;
@@ -108,8 +108,15 @@ hbs.registerHelper("sentence-case", function(context) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 });
+hbs.registerHelper("post-case", function(context) {
+  return context.charAt(0).toUpperCase() + context.substr(1).toLowerCase();
+});
 hbs.registerHelper("parseInt", function(context) {
   return parseInt(context);
+});
+hbs.registerHelper("reformatDate", function(context) {
+  // return context.toLocaleDateString();
+  return dateFormat(context, "dddd, mmmm dS, yyyy, h:MM:ss TT");
 });
 // default value for title local
 app.locals.title = "Recipe Helper";

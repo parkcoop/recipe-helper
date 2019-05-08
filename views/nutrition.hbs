@@ -13,18 +13,23 @@
   #nutritionBlock {
     background: white;
     padding: 15px;
-    width: 125px;
+    width: 100px;
     border: 2.5px solid black;
     text-align: center;
     margin: 10px;
   }
 </style>
+<h1>{{recipeData.body.title}}</h1>
 
 <div id="chartContainer">
-  <h1>General</h1>
-  <canvas id="myChart" width="400" height="200"></canvas><br><br><br><br>
-  <h1>Complex nutrition</h1>
-  <canvas id="secondChart" width="400" height="200"></canvas>
+  <div>
+    <h2>General</h2>
+    <canvas id="myChart" width="400" height="200"></canvas>
+  </div>
+  <div>
+    <h2>Complex nutrition</h2>
+    <canvas id="secondChart" width="400" height="200"></canvas>
+  </div>
 </div>
 {{!-- 
 <h1>Overview</h1>
@@ -45,19 +50,23 @@
     <h2>Sugar</h2>{{data.body.bad.[4].amount}} grams of sugar<br><br>
   </div>
 </div> --}}
-<h1>Consider the bad...</h1>
+<h2>Watch out for...</h2>
 <div id="blockContainer">
   {{#each data.body.bad}}
   <div id="nutritionBlock">
-    <h2>{{this.title}}</h2>{{this.amount}}<br>({{this.percentOfDailyNeeds}}% daily value)
+    <a href="https://en.wikipedia.org/wiki/{{this.title}}">
+      <h4>{{this.title}}</h4>
+    </a>{{this.amount}}<br>({{this.percentOfDailyNeeds}}% daily value)
   </div>
   {{/each}}
 </div>
-<h1>Good source of</h1>
+<h2>Good source of</h2>
 <div id="blockContainer">
   {{#each data.body.good}}
   <div id="nutritionBlock">
-    <h2>{{this.title}}</h2>{{this.amount}}<br>({{this.percentOfDailyNeeds}}% daily value)
+    <a href="https://en.wikipedia.org/wiki/{{this.title}}">
+      <h4>{{this.title}}</h4>
+    </a>{{this.amount}}<br>({{this.percentOfDailyNeeds}}% daily value)
   </div>
   {{/each}}
 </div>

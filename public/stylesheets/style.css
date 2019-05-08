@@ -197,6 +197,22 @@ button {
   border: 5px solid black;
   width: 200px; }
 
+#postModule {
+  border: 1px solid black;
+  padding: 10px;
+  width: 75%;
+  margin: auto;
+  display: flex;
+  align-items: center; }
+
+#postContainer {
+  display: flex;
+  flex-direction: column; }
+
+#content {
+  text-align: left;
+  margin-left: 25px; }
+
 /*
 
 MOBILE

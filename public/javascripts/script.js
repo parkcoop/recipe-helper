@@ -20,8 +20,3 @@ $("#add").click(() => {
     "<input type='text' class='editing' name='ingredients'><br><br>";
   $("#ingredients").append(new_input);
 });
-
-function changeAction(val) {
-  // console.log("value of search form --------------- ", val);
-  $("#searchForm")[0].setAttribute("action", val);
-}

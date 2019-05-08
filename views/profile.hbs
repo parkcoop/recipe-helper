@@ -1,5 +1,7 @@
 <h1>{{sentence-case foundUser.username}}</h1>
 <a href="/addPhoto"><img id="avatar" src="{{foundUser.avatar}}"></a>
+<a href="/followUser/{{foundUser._id}}"><br>
+  <button>Follow this user</button></a>
 <ul>
   {{#each userRecipes}}
   <li>
