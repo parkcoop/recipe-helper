@@ -48,7 +48,13 @@ button {
   align-items: center;
 }
 #joke {
-  font-size: 1.2em;
+  font-size: 1.75em;
+}
+#factContainer {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border: 2.5px solid black;
+  border-radius: 25px;
 }
 #form {
   margin: 30px auto;
@@ -112,13 +118,31 @@ button {
 
 #body-container {
   margin: auto;
+  border-radius: 0 0 25px 25px;
   text-align: center;
   margin-top: 0px;
   padding: 50px;
   width: 75%;
+  // position: absolute;
+
   // background-image: url("/images/pattern.png");
   background: rgba(255, 255, 255, 0.815);
 }
+
+// #body-container {
+//   animation-duration: 0.25s;
+//   animation-name: slidein;
+// }
+
+// @keyframes slidein {
+//   0% {
+//     opacity: 0.75;
+//   }
+
+//   100% {
+//     opacity: 1;
+//   }
+// }
 
 #description {
   line-height: 1.5;
@@ -155,7 +179,7 @@ button {
 }
 #searchSubmit {
   background-color: #df3b3b; /* Green */
-  border: none;
+  border: 1px solid black;
   color: white;
   padding: 10px;
   text-align: center;
@@ -175,11 +199,15 @@ button {
 }
 
 #welcome {
-  color: white;
+  color: black;
+  font-size: 1.5em;
+}
+#userWelcome {
+  color: #df3b3b;
 }
 #searchSubmit-users {
   background-color: #ffffff; /* Green */
-  border: none;
+  border: 1px solid black;
   color: rgb(59, 59, 59);
   padding: 10px;
   text-align: center;
@@ -224,6 +252,9 @@ button {
   margin: auto;
   display: flex;
   align-items: center;
+  background: white;
+  border-radius: 25px;
+  width: 100%;
 }
 
 #postContainer {
@@ -235,6 +266,17 @@ button {
   text-align: left;
   margin-left: 25px;
 }
+#userDisplay {
+  position: absolute;
+  top: 30px;
+  right: 45px;
+  background: white;
+  border-radius: 5px;
+  color: black;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 /*
 
 MOBILE
@@ -242,7 +284,7 @@ MOBILE
 
 */
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   html {
     overflow-x: hidden;
     // height: 100%;
@@ -373,6 +415,25 @@ MOBILE
   .yellowBtn {
     background: yellow;
     color: black;
+  }
+  #postModule {
+    border: 1px solid black;
+    padding: 10px;
+    width: 75%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #postContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #content {
+    text-align: center;
+    margin-left: 25px;
   }
 }
 

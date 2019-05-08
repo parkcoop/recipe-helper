@@ -23,7 +23,7 @@
     <div id="userDisplay">
 
       {{#if user}}
-      <span id="welcome">Welcome, <a href="/users/{{user._id}}">{{sentence-case user.username}}</a></span>
+      <span id="welcome">Welcome, <a id="userWelcome" href="/myhomepage">{{sentence-case user.username}}</a></span>
       <a id="userStuff" href="/logout">Sign out</a>
       {{else}}
       <a id="userStuff" href="/signup">
@@ -46,6 +46,7 @@
 
   <script src="https://code.jquery.com/jquery-3.4.0.slim.js"
     integrity="sha256-milezx5lakrZu0OP9b2QWFy1ft/UEUK6NH1Jqz8hUhQ=" crossorigin="anonymous"></script>
+
   <script src="/javascripts/script.js"></script>
 
 

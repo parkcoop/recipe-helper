@@ -1,9 +1,11 @@
-<center><i>
+<div id="factContainer"><i>
+    <h3>Random food fact</h3>
     <h1 id="joke">{{joke}}</h1>
-  </i></center>
+  </i>
+</div>
 {{#if user}}
 <h1>Welcome, {{sentence-case user.username}}</h1>
 <a href="/my-recipes"><button>View my recipes</button></a>
-<a href="/users/{{user._id}}"><button>View my profile</button></a>
+<a href="/myhomepage"><button>View my profile</button></a>
 <a href="/newsfeed"><button>View my newsfeed</button></a>
 {{/if}}

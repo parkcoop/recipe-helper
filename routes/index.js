@@ -346,6 +346,18 @@ router.get("/newsfeed", ensureAuthenticated, (req, res, next) => {
       });
   });
 });
+
+router.get("/myhomepage", ensureAuthenticated, (req, res, next) => {
+  User.findById(req.user._id).then(me => {
+    Recipe.find({ owner: req.user._id }).then(userRecipes => {
+      res.render("home-page", {
+        data: me,
+        userRecipes: userRecipes,
+        user: req.user
+      });
+    });
+  });
+});
 //5cd111cf27db5221cfa024e1/559371
 // router.get("/user-recipes/:userId/:recipeId", (req, res, next) => {
 //   console.log(`User ${req.params.userId}'s recipe ${req.params.recipeId} `);

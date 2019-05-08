@@ -1,0 +1,11 @@
+<h1>{{sentence-case data.username}}</h1>
+<a href="/addPhoto"><img id="avatar" src="{{data.avatar}}"></a>
+<a href="/followUser/{{data._id}}"><br>
+  <ul>
+    {{#each userRecipes}}
+    <li>
+      <h2><a href="/my-recipes/{{this.recipeId}}">{{this.title}}</a></h2>
+    </li>
+
+    {{/each}}
+  </ul>
