@@ -252,6 +252,7 @@ button {
 #avatar {
   border: 5px solid black;
   width: 200px;
+  border-radius: 50%;
 }
 
 #postModule {
@@ -292,6 +293,10 @@ button {
 #sharedImage {
   width: 25%;
   margin-left: 100px;
+}
+#postAvatar {
+  border: 1px solid black;
+  border-radius: 50%;
 }
 /*
 
