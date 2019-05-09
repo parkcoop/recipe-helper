@@ -307,7 +307,7 @@ router.get("/followUser/:userId", ensureAuthenticated, (req, res, next) => {
       //   `Does ${thisUser.following} include ${req.user._id}   ???????`
       // );
       // console.log(!thisUser.following.includes(req.user._id));
-      if (!thisUser.following.includes(req.user._id)) {
+      if (!thisUser.following.includes(req.params._id)) {
         for (let i = 0; i < thisUser.following.length; i++) {
           updatedFollowers.push(thisUser.following[i]);
         }
