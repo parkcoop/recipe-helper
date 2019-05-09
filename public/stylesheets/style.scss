@@ -14,6 +14,7 @@ body {
   // pointer-events: none;
   position: relative;
   z-index: -2;
+  -webkit-appearance: none;
 }
 #inputBox {
   width: 50%;
@@ -32,6 +33,9 @@ input {
   border: 1px solid black;
   text-align: center;
   font-size: 1.25em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 a {
   color: black;
@@ -367,10 +371,9 @@ MOBILE
     text-align: center;
     margin-top: 0px;
     padding: 10px;
-    width: 90%;
+    width: 100%;
     background: rgba(255, 255, 255, 0.815);
     position: absolute;
-    margin-left: 5%;
   }
 
   #description {
