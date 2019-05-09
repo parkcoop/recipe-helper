@@ -350,12 +350,35 @@ router.get("/newsfeed", ensureAuthenticated, (req, res, next) => {
 router.get("/myhomepage", ensureAuthenticated, (req, res, next) => {
   User.findById(req.user._id).then(me => {
     Recipe.find({ owner: req.user._id }).then(userRecipes => {
-      res.render("home-page", {
-        data: me,
-        userRecipes: userRecipes,
-        user: req.user
-      });
+      Post.find({ owner: req.user._id })
+        .sort([["date", -1]])
+        .then(myPosts => {
+          res.render("home-page", {
+            data: me,
+            userRecipes: userRecipes,
+            user: req.user,
+            sharedPost: myPosts
+          });
+        });
     });
+  });
+});
+
+router.get("/shareImage", ensureAuthenticated, (req, res, next) => {
+  res.render("share-post");
+});
+
+router.post("/shareImage", uploadCloud.single("photo"), (req, res, next) => {
+  // console.log(req);
+  const newSharePost = new Post({
+    title: req.body.postBody,
+    image: req.file.url,
+    date: Date.now(),
+    owner: req.user._id
+  });
+  newSharePost.save().then(updatedNewsFeed => {
+    console.log("post published!");
+    res.redirect("/newsfeed");
   });
 });
 //5cd111cf27db5221cfa024e1/559371

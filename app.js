@@ -18,10 +18,20 @@ const flash = require("connect-flash");
 const accountSid = process.env.SID;
 const authToken = process.env.AUTHTOKEN;
 const client = require("twilio")(accountSid, authToken);
-const FacebookStrategy = require("passport-facebook").Strategy;
+
+// const MongoClient = require(‘mongodb’).MongoClient;
+// const uri = "mongodb+srv://parkcoop:<password>@cluster0-mvuct.mongodb.net/test?retryWrites=true";
+// const client = new MongoClient(uri, { useNewUrlParser: true });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
 mongoose.Promise = Promise;
+
 mongoose
-  .connect("mongodb://localhost/recipehelper", { useNewUrlParser: true })
+  // .connect("mongodb://localhost/recipehelper", { useNewUrlParser: true })
+  .connect(process.env.MONGO, { useNewUrlParser: true })
   .then(x => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`

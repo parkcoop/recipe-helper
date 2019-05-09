@@ -1,5 +1,10 @@
 <h1>Search results for "{{query}}"</h1>
 
 {{#each users}}
-<a href="/users/{{this._id}}">{{this.username}}</a><br><br>
+<hr>
+
+<h3><a href="/users/{{this._id}}">{{sentence-case this.username}}</a></h3>
+
+
 {{/each}}
+<hr>

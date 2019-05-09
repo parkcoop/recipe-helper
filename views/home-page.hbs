@@ -1,11 +1,34 @@
 <h1>{{sentence-case data.username}}</h1>
 <a href="/addPhoto"><img id="avatar" src="{{data.avatar}}"></a>
-<a href="/followUser/{{data._id}}"><br>
-  <ul>
-    {{#each userRecipes}}
-    <li>
-      <h2><a href="/my-recipes/{{this.recipeId}}">{{this.title}}</a></h2>
-    </li>
+<h1>My recipes</h1>
+<hr>
 
-    {{/each}}
-  </ul>
+<ul>
+  {{#each userRecipes}}
+  <li>
+    <h2><a href="/my-recipes/{{this.recipeId}}">{{this.title}}</a></h2>
+  </li>
+
+  {{/each}}
+</ul>
+<h1>My posts</h1>
+<hr>
+<div id="postContainer">
+  {{#each sharedPost}}
+  <div id="postModule">
+    <a href="/users/{{this.owner._id}}"><img id="postAvatar" width="100px" src="{{this.owner.avatar}}"></a>
+    <div id="content">
+      <h3>{{reformatDate this.date}}</h3>
+      <h2>{{post-case this.title}}</h2>
+    </div>
+
+    {{#if image}}
+    <div>
+      <img id="sharedImage" src="{{this.image}}">
+    </div>
+    {{/if}}
+
+  </div> <br><br>
+  {{/each}}
+
+</div>

@@ -5,11 +5,15 @@ body {
   background-size: cover;
   overflow-x: hidden;
   // overflow-y: hidden;
-  background-repeat: repeat;
+  // background-repeat: repeat;
   margin: 0px;
   width: 100%;
   padding: 0px;
   font-family: "Roboto Condensed", sans-serif;
+  min-height: 100vh;
+  // pointer-events: none;
+  position: relative;
+  z-index: -2;
 }
 #inputBox {
   width: 50%;
@@ -123,26 +127,31 @@ button {
   margin-top: 0px;
   padding: 50px;
   width: 75%;
+
   // position: absolute;
 
   // background-image: url("/images/pattern.png");
   background: rgba(255, 255, 255, 0.815);
 }
 
-// #body-container {
-//   animation-duration: 0.25s;
-//   animation-name: slidein;
-// }
+#body-container {
+  animation-duration: 0.5s;
+  animation-name: slidein;
+  overflow: hidden;
+  z-index: -1;
+  position: absolute;
+  margin-left: 10%;
+}
 
-// @keyframes slidein {
-//   0% {
-//     opacity: 0.75;
-//   }
+@keyframes slidein {
+  0% {
+    margin-top: -100px;
+  }
 
-//   100% {
-//     opacity: 1;
-//   }
-// }
+  100% {
+    margin-top: 0px;
+  }
+}
 
 #description {
   line-height: 1.5;
@@ -277,6 +286,13 @@ button {
   padding-left: 10px;
   padding-right: 10px;
 }
+#shareText {
+  width: 50%;
+}
+#sharedImage {
+  width: 25%;
+  margin-left: 100px;
+}
 /*
 
 MOBILE
@@ -347,6 +363,8 @@ MOBILE
     padding: 10px;
     width: 90%;
     background: rgba(255, 255, 255, 0.815);
+    position: absolute;
+    margin-left: 5%;
   }
 
   #description {
