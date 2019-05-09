@@ -119,6 +119,7 @@ button {
   margin-top: 0px;
   padding: 50px;
   width: 75%;
+  position: sticky;
   background: rgba(255, 255, 255, 0.815); }
 
 #body-container {
@@ -126,8 +127,7 @@ button {
   animation-name: slidein;
   overflow: hidden;
   z-index: -1;
-  position: absolute;
-  margin-left: 10%; }
+  margin: auto; }
 
 @keyframes slidein {
   0% {
@@ -264,11 +264,17 @@ button {
 
 #sharedImage {
   width: 25%;
-  margin-left: 100px; }
+  margin: auto; }
 
 #postAvatar {
   border: 1px solid black;
   border-radius: 50%; }
+
+#shareButton {
+  margin-bottom: 50px; }
+
+#heading {
+  font-size: 3em; }
 
 /*
 
@@ -320,13 +326,11 @@ MOBILE
   .editing {
     width: 80%; }
   #body-container {
-    margin: auto;
     text-align: center;
     margin-top: 0px;
-    padding: 10px;
-    width: 100%;
+    border-radius: 0px;
     background: rgba(255, 255, 255, 0.815);
-    position: absolute; }
+    position: sticky; }
   #description {
     line-height: 1.5; }
   #attributes {
@@ -346,6 +350,7 @@ MOBILE
     top: 0px;
     left: 0px;
     margin: auto;
+    border-radius: 0px;
     right: 0px;
     text-align: center; }
   #instructionsEdit {

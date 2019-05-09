@@ -109,6 +109,18 @@ app.use(
   })
 );
 
+const rateLimit = require("express-rate-limit");
+
+app.enable("trust proxy"); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+
+const apiLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 60 minutes
+  max: 10
+});
+
+// only apply to requests that begin with /api/
+app.use("/api", apiLimiter);
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -136,5 +148,8 @@ app.use("/", auth);
 
 const index = require("./routes/index");
 app.use("/", index);
+
+const api = require("./routes/api");
+app.use("/api", api);
 
 module.exports = app;

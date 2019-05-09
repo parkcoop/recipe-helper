@@ -2,7 +2,7 @@
   <a href="{{data.sourceUrl}}"><button>View original recipe online</button></a><br>
   <img id="dishImage" src="{{data.image}}">
   <h1 id="recipeTitle">{{data.title}}</h1>
-  <a href="/nutrition/{{data.id}}"><button>Get nutrition information</button></a>
+  <a href="/api/nutrition/{{data.id}}"><button>Get nutrition information</button></a>
   <ul id="ingredients">
     {{#if data.vegan}}
     <li>Vegan <br></li>

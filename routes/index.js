@@ -8,14 +8,14 @@ const authToken = process.env.AUTHTOKEN;
 const client = require("twilio")(accountSid, authToken);
 const User = require("../models/user");
 const Post = require("../models/post");
+const Fact = require("../models/fact");
 //const multer = require("multer");
 const uploadCloud = require("../cloudinary");
 
 router.get("/", (req, res, next) => {
-  //random joke: (removed)
   // unirest
   //   .get(
-  //     "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/jokes/random"
+  //     "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random"
   //   )
   //   .header(
   //     "X-RapidAPI-Host",
@@ -23,114 +23,114 @@ router.get("/", (req, res, next) => {
   //   )
   //   .header("X-RapidAPI-Key", process.env.KEY)
   //   .end(function(result) {
-  //     // console.log(result.body.text);
   //     res.render("index", { joke: result.body.text, user: req.user });
   //   });
-  unirest
-    .get(
-      "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random"
-    )
-    .header(
-      "X-RapidAPI-Host",
-      "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-    )
-    .header("X-RapidAPI-Key", process.env.KEY)
-    .end(function(result) {
-      res.render("index", { joke: result.body.text, user: req.user });
-    });
+  Fact.count().exec(function(err, count) {
+    // Get a random entry
+    var random = Math.floor(Math.random() * count);
+
+    // Again query all users but only fetch one offset by our random #
+    Fact.findOne()
+      .skip(random)
+      .exec(function(err, result) {
+        // Tada! random user
+        console.log(result);
+        res.render("index", { joke: result.content, user: req.user });
+      });
+  });
 });
 
 router.get("/search", (req, res, next) => {
   res.render("search", { user: req.user });
 });
 
-router.post("/search", (req, res, next) => {
-  let searchTerm = req.body.query;
-  unirest
-    .get(
-      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=25&offset=0&query=${searchTerm}`
-    )
-    .header(
-      "X-RapidAPI-Host",
-      "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-    )
-    .header("X-RapidAPI-Key", process.env.KEY)
-    .end(function(result) {
-      // console.log(result);
-      res.render("results", { data: result.body.results, user: req.user });
-    });
-});
+// router.post("/search", (req, res, next) => {
+//   let searchTerm = req.body.query;
+//   unirest
+//     .get(
+//       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=25&offset=0&query=${searchTerm}`
+//     )
+//     .header(
+//       "X-RapidAPI-Host",
+//       "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+//     )
+//     .header("X-RapidAPI-Key", process.env.KEY)
+//     .end(function(result) {
+//       // console.log(result);
+//       res.render("results", { data: result.body.results, user: req.user });
+//     });
+// });
 
-router.get("/recipes/:id", (req, res, next) => {
-  unirest
-    .get(
-      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
-        req.params.id
-      }/information`
-    )
-    .header(
-      "X-RapidAPI-Host",
-      "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-    )
-    .header("X-RapidAPI-Key", process.env.KEY)
-    .end(function(result) {
-      // console.log(result);
-      res.render("single-result", { data: result.body, user: req.user });
-    });
-});
+// router.get("/recipes/:id", (req, res, next) => {
+//   unirest
+//     .get(
+//       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
+//         req.params.id
+//       }/information`
+//     )
+//     .header(
+//       "X-RapidAPI-Host",
+//       "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+//     )
+//     .header("X-RapidAPI-Key", process.env.KEY)
+//     .end(function(result) {
+//       // console.log(result);
+//       res.render("single-result", { data: result.body, user: req.user });
+//     });
+// });
 
-router.get("/save/:id", ensureAuthenticated, (req, res, next) => {
-  unirest
-    .get(
-      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
-        req.params.id
-      }/information`
-    )
-    .header(
-      "X-RapidAPI-Host",
-      "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-    )
-    .header("X-RapidAPI-Key", process.env.KEY)
-    .end(function(result) {
-      let ingredientsArray = [];
-      for (let i = 0; i < result.body.extendedIngredients.length; i++) {
-        ingredientsArray.push(
-          result.body.extendedIngredients[i].originalString
-        );
-      }
-      // console.log(ingredientsArray);
-      const saveThisRecipe = new Recipe({
-        recipeId: result.body.id,
-        title: result.body.title,
-        ingredients: ingredientsArray,
-        instructions: result.body.instructions,
-        time: result.body.preparationMinutes,
-        imgURL: result.body.image,
-        owner: req.user._id
-      });
-      saveThisRecipe
-        .save()
-        .then(saved => {
-          // console.log(
-          //   `${req.user.username} just added ${
-          //     result.body.title
-          //   } to his recipe book!`
-          // );
-          const newPostToPublish = new Post({
-            title: `${req.user.username} just added ${
-              result.body.title
-            } to their recipe book!`,
-            date: Date.now(),
-            owner: req.user._id
-          });
-          newPostToPublish.save().then(updatedNewsFeed => {
-            console.log("post published!");
-            res.redirect("/my-recipes");
-          });
-        })
-        .catch(err => console.log(err));
-    });
-});
+// router.get("/save/:id", ensureAuthenticated, (req, res, next) => {
+//   unirest
+//     .get(
+//       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
+//         req.params.id
+//       }/information`
+//     )
+//     .header(
+//       "X-RapidAPI-Host",
+//       "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+//     )
+//     .header("X-RapidAPI-Key", process.env.KEY)
+//     .end(function(result) {
+//       let ingredientsArray = [];
+//       for (let i = 0; i < result.body.extendedIngredients.length; i++) {
+//         ingredientsArray.push(
+//           result.body.extendedIngredients[i].originalString
+//         );
+//       }
+//       // console.log(ingredientsArray);
+//       const saveThisRecipe = new Recipe({
+//         recipeId: result.body.id,
+//         title: result.body.title,
+//         ingredients: ingredientsArray,
+//         instructions: result.body.instructions,
+//         time: result.body.preparationMinutes,
+//         imgURL: result.body.image,
+//         owner: req.user._id
+//       });
+//       saveThisRecipe
+//         .save()
+//         .then(saved => {
+//           // console.log(
+//           //   `${req.user.username} just added ${
+//           //     result.body.title
+//           //   } to his recipe book!`
+//           // );
+//           const newPostToPublish = new Post({
+//             title: `${req.user.username} just added ${
+//               result.body.title
+//             } to their recipe book!`,
+//             date: Date.now(),
+//             owner: req.user._id
+//           });
+//           newPostToPublish.save().then(updatedNewsFeed => {
+//             console.log("post published!");
+//             res.redirect("/my-recipes");
+//           });
+//         })
+//         .catch(err => console.log(err));
+//     });
+// });
 
 router.get("/my-recipes", ensureAuthenticated, (req, res, next) => {
   Recipe.find({ owner: req.user._id }).then(myRecipes => {
@@ -249,53 +249,53 @@ router.post("/search/users", (req, res, next) => {
   });
 });
 
-router.get("/nutrition/:id", (req, res, next) => {
-  unirest
-    .get(
-      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
-        req.params.id
-      }/nutritionWidget.json`
-    )
-    .header(
-      "X-RapidAPI-Host",
-      "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-    )
-    .header("X-RapidAPI-Key", process.env.KEY)
-    .end(function(result) {
-      // console.log(result);
-      const goodNutritionItems = [];
-      const goodNutritionAmounts = [];
-      for (let i = 0; i < result.body.good.length; i++) {
-        // console.log(result.body.good[i].title);
-        // console.log(result.body.good[i].percentOfDailyNeeds);
-        goodNutritionItems.push(result.body.good[i].title);
-        goodNutritionAmounts.push(result.body.good[i].percentOfDailyNeeds);
-      }
-      goodNutrition = {
-        titles: goodNutritionItems,
-        amounts: goodNutritionAmounts
-      };
-      unirest
-        .get(
-          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
-            req.params.id
-          }/information`
-        )
-        .header(
-          "X-RapidAPI-Host",
-          "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-        )
-        .header("X-RapidAPI-Key", process.env.KEY)
-        .end(function(recipeData) {
-          res.render("nutrition", {
-            data: result,
-            nutritionFacts: goodNutrition,
-            user: req.user,
-            recipeData: recipeData
-          });
-        });
-    });
-});
+// router.get("/nutrition/:id", (req, res, next) => {
+//   unirest
+//     .get(
+//       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
+//         req.params.id
+//       }/nutritionWidget.json`
+//     )
+//     .header(
+//       "X-RapidAPI-Host",
+//       "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+//     )
+//     .header("X-RapidAPI-Key", process.env.KEY)
+//     .end(function(result) {
+//       // console.log(result);
+//       const goodNutritionItems = [];
+//       const goodNutritionAmounts = [];
+//       for (let i = 0; i < result.body.good.length; i++) {
+//         // console.log(result.body.good[i].title);
+//         // console.log(result.body.good[i].percentOfDailyNeeds);
+//         goodNutritionItems.push(result.body.good[i].title);
+//         goodNutritionAmounts.push(result.body.good[i].percentOfDailyNeeds);
+//       }
+//       goodNutrition = {
+//         titles: goodNutritionItems,
+//         amounts: goodNutritionAmounts
+//       };
+//       unirest
+//         .get(
+//           `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
+//             req.params.id
+//           }/information`
+//         )
+//         .header(
+//           "X-RapidAPI-Host",
+//           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+//         )
+//         .header("X-RapidAPI-Key", process.env.KEY)
+//         .end(function(recipeData) {
+//           res.render("nutrition", {
+//             data: result,
+//             nutritionFacts: goodNutrition,
+//             user: req.user,
+//             recipeData: recipeData
+//           });
+//         });
+//     });
+// });
 //http://localhost:3000/followUser/5ccb1c37d2b6aa25f28b27d3
 router.get("/followUser/:userId", ensureAuthenticated, (req, res, next) => {
   console.log(req.params.userId, req.user._id);
