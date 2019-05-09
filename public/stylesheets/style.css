@@ -309,6 +309,7 @@ MOBILE
     align-self: center;
     justify-content: space-around; }
   #logo {
+    margin-top: 50px;
     align-self: center;
     width: 50%;
     order: 1; }
@@ -337,9 +338,13 @@ MOBILE
     margin-top: 25px;
     font-size: 2em; }
   #welcome {
-    color: white; }
+    color: black; }
   #userDisplay {
-    display: none; }
+    top: 0px;
+    left: 0px;
+    margin: auto;
+    right: 0px;
+    text-align: center; }
   #instructionsEdit {
     height: 100px;
     width: 600px;

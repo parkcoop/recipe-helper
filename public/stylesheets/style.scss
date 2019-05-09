@@ -354,6 +354,7 @@ MOBILE
   }
 
   #logo {
+    margin-top: 50px;
     align-self: center;
     width: 50%;
     order: 1;
@@ -394,10 +395,14 @@ MOBILE
   }
 
   #welcome {
-    color: white;
+    color: black;
   }
   #userDisplay {
-    display: none;
+    top: 0px;
+    left: 0px;
+    margin: auto;
+    right: 0px;
+    text-align: center;
   }
   #instructionsEdit {
     height: 100px;
