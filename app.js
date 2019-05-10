@@ -19,18 +19,9 @@ const accountSid = process.env.SID;
 const authToken = process.env.AUTHTOKEN;
 const client = require("twilio")(accountSid, authToken);
 
-// const MongoClient = require(‘mongodb’).MongoClient;
-// const uri = "mongodb+srv://parkcoop:<password>@cluster0-mvuct.mongodb.net/test?retryWrites=true";
-// const client = new MongoClient(uri, { useNewUrlParser: true });
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
 mongoose.Promise = Promise;
 
 mongoose
-  // .connect("mongodb://localhost/recipehelper", { useNewUrlParser: true })
   .connect(process.env.MONGO, { useNewUrlParser: true })
   .then(x => {
     console.log(
@@ -48,7 +39,6 @@ const debug = require("debug")(
 
 const app = express();
 
-// Middleware Setup
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -99,7 +89,6 @@ passport.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-// Express View engine setup
 
 app.use(
   require("node-sass-middleware")({
@@ -111,14 +100,13 @@ app.use(
 
 const rateLimit = require("express-rate-limit");
 
-app.enable("trust proxy"); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+app.enable("trust proxy");
 
 const apiLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
-  max: 10
+  max: 20
 });
 
-// only apply to requests that begin with /api/
 app.use("/api", apiLimiter);
 
 app.set("views", path.join(__dirname, "views"));
@@ -137,10 +125,8 @@ hbs.registerHelper("parseInt", function(context) {
   return parseInt(context);
 });
 hbs.registerHelper("reformatDate", function(context) {
-  // return context.toLocaleDateString();
   return dateFormat(context, "dddd, mmmm dS, yyyy, h:MM:ss TT");
 });
-// default value for title local
 app.locals.title = "Recipe Helper";
 
 const auth = require("./routes/auth-routes");

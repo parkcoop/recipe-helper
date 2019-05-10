@@ -27,7 +27,7 @@
     {{/each}}
   </ul>
   <br><br>
-  <a href="/save/{{data.id}}"><button>Add to My Recipes</button></a><br><br>
+  <a href="/api/save/{{data.id}}"><button>Add to My Recipes</button></a><br><br>
 
   <form method="post" action="/textRecipe">
     <input type="tel" name="telphone" placeholder="8888888888" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" maxlength="12"
