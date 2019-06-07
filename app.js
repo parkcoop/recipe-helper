@@ -104,7 +104,7 @@ app.enable("trust proxy");
 
 const apiLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
-  max: 100
+  max: 10
 });
 
 app.use("/api", apiLimiter);
